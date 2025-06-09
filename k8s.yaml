@@ -50,8 +50,11 @@ metadata:
   name: k8s-mcp-server
   labels:
     app: k8s-mcp-server
+  annotations:
+    cloud.google.com/load-balancer-type: "External"
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - port: 8080
     targetPort: 8080
