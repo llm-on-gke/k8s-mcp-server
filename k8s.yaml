@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-mcp-server
+  labels:
+    app: k8s-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-mcp-server
+  template:
+    metadata:
+      labels:
+        app: k8s-mcp-server
+    spec:
+      containers:
+      - name: k8s-mcp-server
+        image: k8s-mcp-server:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: KUBECONFIG
+          value: /etc/kubernetes/kubelet/kubeconfig
+        - name: SERVER_MODE
+          value: "sse"
+        - name: SERVER_PORT
+          value: "8080"
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /etc/kubernetes/kubelet
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+      volumes:
+      - name: kubeconfig
+        hostPath:
+          path: /etc/kubernetes/kubelet
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-mcp-server
+  labels:
+    app: k8s-mcp-server
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: k8s-mcp-server 
