@@ -21,14 +21,14 @@ spec:
         - containerPort: 8080
         env:
         - name: KUBECONFIG
-          value: /etc/kubernetes/kubelet/kubeconfig
+          value: /var/lib/kubelet/kubeconfig
         - name: SERVER_MODE
           value: "sse"
         - name: SERVER_PORT
           value: "8080"
         volumeMounts:
         - name: kubeconfig
-          mountPath: /etc/kubernetes/kubelet
+          mountPath: /var/lib/kubelet
           readOnly: true
         livenessProbe:
           httpGet:
@@ -41,7 +41,7 @@ spec:
       volumes:
       - name: kubeconfig
         hostPath:
-          path: /etc/kubernetes/kubelet
+          path: /var/lib/kubelet
           type: Directory
 ---
 apiVersion: v1
