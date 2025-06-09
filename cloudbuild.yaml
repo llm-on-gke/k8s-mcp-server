@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', '$LOCATION-docker.pkg.dev/$PROJECT_ID/gke-llm/k8s-mcp-server:latest', '.' ]
+images:
+- '$LOCATION-docker.pkg.dev/$PROJECT_ID/gke-llm/k8s-mcp-server:latest'
+  # Push the container image to Artifact Registry, get sha256 of the image
+  
