@@ -17,6 +17,8 @@ spec:
       containers:
       - name: k8s-mcp-server
         image: ginnux/k8s-mcp-server:latest
+        command: ["sleep"]
+        args: ["infinity"]
         ports:
         - containerPort: 8080
         env:
